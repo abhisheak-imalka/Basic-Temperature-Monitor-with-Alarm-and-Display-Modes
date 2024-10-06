@@ -1,0 +1,147 @@
+
+test_1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  0000011e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000000ca  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  0000011e  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000150  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  00000190  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000071f  00000000  00000000  000001b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000066d  00000000  00000000  000008cf  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000027a  00000000  00000000  00000f3c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  000011b8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000039b  00000000  00000000  000011dc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000006a  00000000  00000000  00001577  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  000015e1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 63 00 	jmp	0xc6	; 0xc6 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+#include <util/delay.h>
+#define led PB2
+
+int main(void)
+{
+	TCCR1A |= (1<<WGM11) | (1<<COM1B1); // Use COM1B1 instead of COM1A1
+  80:	e0 e8       	ldi	r30, 0x80	; 128
+  82:	f0 e0       	ldi	r31, 0x00	; 0
+  84:	80 81       	ld	r24, Z
+  86:	82 62       	ori	r24, 0x22	; 34
+  88:	80 83       	st	Z, r24
+	TCCR1B |= (1<<WGM12) | (1<<CS11);
+  8a:	e1 e8       	ldi	r30, 0x81	; 129
+  8c:	f0 e0       	ldi	r31, 0x00	; 0
+  8e:	80 81       	ld	r24, Z
+  90:	8a 60       	ori	r24, 0x0A	; 10
+  92:	80 83       	st	Z, r24
+	DDRB |= (1<<led); // Use PB2 instead of PB1
+  94:	22 9a       	sbi	0x04, 2	; 4
+	ICR1 = 1023;
+  96:	8f ef       	ldi	r24, 0xFF	; 255
+  98:	93 e0       	ldi	r25, 0x03	; 3
+  9a:	90 93 87 00 	sts	0x0087, r25	; 0x800087 <__TEXT_REGION_LENGTH__+0x7e0087>
+  9e:	80 93 86 00 	sts	0x0086, r24	; 0x800086 <__TEXT_REGION_LENGTH__+0x7e0086>
+	
+	while (1)
+	{
+		// Gradually increase the brightness
+		for (int i = 0; i < 1023; i++) {
+			OCR1B = i; // Use OCR1B instead of OCR1A
+  a2:	ea e8       	ldi	r30, 0x8A	; 138
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+	ICR1 = 1023;
+	
+	while (1)
+	{
+		// Gradually increase the brightness
+		for (int i = 0; i < 1023; i++) {
+  a6:	80 e0       	ldi	r24, 0x00	; 0
+  a8:	90 e0       	ldi	r25, 0x00	; 0
+			OCR1B = i; // Use OCR1B instead of OCR1A
+  aa:	91 83       	std	Z+1, r25	; 0x01
+  ac:	80 83       	st	Z, r24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  ae:	a7 e8       	ldi	r26, 0x87	; 135
+  b0:	b3 e1       	ldi	r27, 0x13	; 19
+  b2:	11 97       	sbiw	r26, 0x01	; 1
+  b4:	f1 f7       	brne	.-4      	; 0xb2 <main+0x32>
+  b6:	00 c0       	rjmp	.+0      	; 0xb8 <main+0x38>
+  b8:	00 00       	nop
+	ICR1 = 1023;
+	
+	while (1)
+	{
+		// Gradually increase the brightness
+		for (int i = 0; i < 1023; i++) {
+  ba:	01 96       	adiw	r24, 0x01	; 1
+  bc:	8f 3f       	cpi	r24, 0xFF	; 255
+  be:	b3 e0       	ldi	r27, 0x03	; 3
+  c0:	9b 07       	cpc	r25, r27
+  c2:	99 f7       	brne	.-26     	; 0xaa <main+0x2a>
+  c4:	f0 cf       	rjmp	.-32     	; 0xa6 <main+0x26>
+
+000000c6 <_exit>:
+  c6:	f8 94       	cli
+
+000000c8 <__stop_program>:
+  c8:	ff cf       	rjmp	.-2      	; 0xc8 <__stop_program>
